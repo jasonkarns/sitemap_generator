@@ -11,6 +11,7 @@ Bundler.require
 # Load support files
 require_relative 'support/file_macros'
 require_relative 'support/xml_macros'
+require_relative 'support/sitemap_helpers'
 
 # Configure webmock
 WebMock.disable_net_connect!
