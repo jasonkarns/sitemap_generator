@@ -7,8 +7,6 @@ end
 # Load dev/test libs
 require 'bundler/setup'
 Bundler.require
-require 'byebug'
-require 'webmock/rspec'
 
 # Load support files
 require_relative 'support/file_macros'

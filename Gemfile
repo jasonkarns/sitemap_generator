@@ -8,6 +8,7 @@ gemspec
 gem 'appraisal', git: 'https://github.com/thoughtbot/appraisal.git'
 gem 'aws-sdk-core'
 gem 'aws-sdk-s3'
+gem 'byebug'
 gem 'combustion'
 gem 'fog-aws'
 gem 'google-cloud-storage'
@@ -18,16 +19,12 @@ gem 'rspec_junit_formatter'
 gem 'rspec-rails'
 gem 'simplecov'
 gem 'sqlite3', '~> 2.1.0'
-gem 'webmock'
+gem 'webmock', require: 'webmock/rspec'
 
 if RUBY_VERSION.match?(/2.5.*/)
   gem 'nokogiri', '1.12.5'
 else
   gem 'nokogiri'
-end
-
-group :test do
-  gem 'byebug'
 end
 
 # Dev tools / linter
