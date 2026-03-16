@@ -5,6 +5,8 @@ SimpleCov.start do
 end
 
 # Load dev/test libs
+require 'bundler/setup'
+Bundler.require
 require 'byebug'
 require 'webmock/rspec'
 
