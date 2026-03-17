@@ -45,6 +45,16 @@ module SitemapGenerator
         ENV['CONFIG_FILE'] = config_file
       end
     end
+
+    # Allow lazily setting the adapter class without forcing an autoload.
+    # (ie. string or symbol name; or Callable (proc/lambda/etc))
+    initializer 'sitemap_generator.adapter' do |app|
+      config.to_prepare do
+        ActiveSupport.on_load(:sitemap_generator) do
+          self.adapter = Utilities.find_adapter app.config.sitemap.adapter
+        end
+      end
+    end
   end
 
   ActiveSupport.run_load_hooks(:sitemap_generator, Sitemap)
