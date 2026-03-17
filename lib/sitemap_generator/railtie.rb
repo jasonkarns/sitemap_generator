@@ -10,7 +10,6 @@ module SitemapGenerator
     end
 
     # Recognize existing Rails options as defaults for config.sitemap.*
-    # Then, after_initialize, "compile" them onto the SitemapGenerator classes.
     initializer 'sitemap_generator.set_configs' do |app|
       # routes.default_url_options takes precedence, falling back to configs
       url_opts = (app.default_url_options || {})
@@ -31,11 +30,14 @@ module SitemapGenerator
 
       config.sitemap.public_path ||= app.paths['public'].first
 
-      config.after_initialize do # TODO: ActiveSupport.on_load(:sitemap_generator)
-        config.sitemap.except(:adapter).each do |k, v|
-          SitemapGenerator::Sitemap.send("#{k}=", v)
+      # "Compile" config.sitemap options onto the Sitemap class.
+      config.after_initialize do
+        ActiveSupport.on_load(:sitemap_generator, yield: true) do |sitemap|
+          config.sitemap.except(:adapter).each { |k, v| sitemap.public_send("#{k}=", v) }
         end
       end
     end
   end
+
+  ActiveSupport.run_load_hooks(:sitemap_generator, Sitemap)
 end
