@@ -120,4 +120,26 @@ RSpec.describe "SitemapGenerator::Railtie" do
       end
     end
   end
+
+  describe "config_file initializer" do
+    subject(:initializer) { initializers["sitemap_generator.config_file"] }
+
+    after { ENV.delete "CONFIG_FILE" }
+
+    it "sets CONFIG_FILE" do
+      config.sitemap.config_file = "custom.rb"
+
+      expect { initializer.run(app) }
+        .to change { ENV["CONFIG_FILE"] }.to("custom.rb")
+        .and change(config, :sitemap).from have_key(:config_file)
+    end
+
+    it "does not override CONFIG_FILE" do
+      ENV["CONFIG_FILE"] = "existing.rb"
+      config.sitemap.config_file = "override.rb"
+
+      expect { initializer.run(app) }
+        .to_not change { ENV["CONFIG_FILE"] }.from("existing.rb")
+    end
+  end
 end

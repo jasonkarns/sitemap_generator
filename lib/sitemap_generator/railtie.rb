@@ -37,6 +37,14 @@ module SitemapGenerator
         end
       end
     end
+
+    # Allow setting the CONFIG_FILE without relying on env var;
+    # (e.g in config/application or environments/*.rb)
+    initializer 'sitemap_generator.config_file' do
+      if (config_file = config.sitemap.delete(:config_file).presence) && ENV['CONFIG_FILE'].blank?
+        ENV['CONFIG_FILE'] = config_file
+      end
+    end
   end
 
   ActiveSupport.run_load_hooks(:sitemap_generator, Sitemap)
