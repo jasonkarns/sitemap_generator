@@ -1,5 +1,11 @@
 # frozen_string_literal: true
 
+raise LoadError, <<~MSG unless defined?(ActiveStorage)
+  Error: 'ActiveStorage' is not defined.
+
+  Please `require 'active_storage'` - or another library that defines this class.
+MSG
+
 module SitemapGenerator
   # Class for uploading sitemaps to ActiveStorage.
   class ActiveStorageAdapter

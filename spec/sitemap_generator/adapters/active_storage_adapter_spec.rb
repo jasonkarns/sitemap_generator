@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
-require 'sitemap_generator/adapters/active_storage_adapter'
 
 RSpec.describe 'SitemapGenerator::ActiveStorageAdapter' do
   subject(:adapter) { SitemapGenerator::ActiveStorageAdapter.new }
