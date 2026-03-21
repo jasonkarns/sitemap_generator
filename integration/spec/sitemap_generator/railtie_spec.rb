@@ -43,7 +43,7 @@ RSpec.describe "SitemapGenerator::Railtie" do
       end
 
       it "doesn't construct a default_host if missing :host" do
-        config.action_controller.default_url_options = { trailing_slash: true }
+        config.action_controller.default_url_options = { host: "", trailing_slash: true }
 
         initializer.run(app)
 

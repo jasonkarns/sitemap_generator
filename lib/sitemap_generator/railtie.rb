@@ -17,14 +17,14 @@ module SitemapGenerator
                  .with_defaults(config.try(:action_mailer).try(:default_url_options) || {})
                  .with_defaults(config.try(:active_job).try(:default_url_options) || {})
 
-      config.sitemap.default_host ||= ActionDispatch::Http::URL.full_url_for(url_opts) if url_opts.key?(:host)
+      config.sitemap.default_host ||= ActionDispatch::Http::URL.full_url_for(url_opts) if url_opts[:host].present?
 
       # Rails defaults action_controller.asset_host and action_mailer.asset_host
       # to the top-level config.asset_host so we get that for free here.
       config.sitemap.sitemaps_host ||= [
         config.try(:action_mailer).try(:asset_host),
         config.try(:action_controller).try(:asset_host)
-      ].grep(String).first
+      ].grep(String).compact_blank.first
 
       config.sitemap.compress = config.try(:assets).try(:gzip) if config.sitemap.compress.nil?
 
