@@ -43,11 +43,19 @@ RSpec.describe "SitemapGenerator::Railtie" do
       end
 
       it "doesn't construct a default_host if missing :host" do
-        config.action_controller.default_url_options = { trailing_slash: true }
+        config.action_controller.default_url_options = { host: "", trailing_slash: true }
 
         initializer.run(app)
 
         expect(config.sitemap.default_host).to be_nil
+      end
+
+      it "infers protocol from Rails (respects force_ssl)" do
+        config.action_controller.default_url_options = { host: "example.test" }
+
+        initializer.run(app)
+
+        expect(config.sitemap.default_host).to eq "http://example.test"
       end
     end
 
@@ -77,6 +85,14 @@ RSpec.describe "SitemapGenerator::Railtie" do
         initializer.run(app)
 
         expect(config.sitemap.sitemaps_host).to be_nil
+      end
+
+      it "infers protocol from Rails (respects force_ssl)" do
+        config.action_controller.asset_host = "example.test"
+
+        initializer.run(app)
+
+        expect(config.sitemap.sitemaps_host).to eq "http://example.test"
       end
     end
 
