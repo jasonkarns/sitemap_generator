@@ -22,8 +22,8 @@ module SitemapGenerator
       # Rails defaults action_controller.asset_host and action_mailer.asset_host
       # to the top-level config.asset_host so we get that for free here.
       config.sitemap.sitemaps_host ||= [
-        config.try(:action_controller).try(:asset_host),
-        config.try(:action_mailer).try(:asset_host)
+        config.try(:action_mailer).try(:asset_host),
+        config.try(:action_controller).try(:asset_host)
       ].grep(String).first
 
       config.sitemap.compress = config.try(:assets).try(:gzip) if config.sitemap.compress.nil?
