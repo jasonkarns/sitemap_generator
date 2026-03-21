@@ -49,6 +49,14 @@ RSpec.describe "SitemapGenerator::Railtie" do
 
         expect(config.sitemap.default_host).to be_nil
       end
+
+      it "infers protocol from Rails (respects force_ssl)" do
+        config.action_controller.default_url_options = { host: "example.test" }
+
+        initializer.run(app)
+
+        expect(config.sitemap.default_host).to eq "http://example.test"
+      end
     end
 
     describe ".sitemaps_host" do
@@ -77,6 +85,14 @@ RSpec.describe "SitemapGenerator::Railtie" do
         initializer.run(app)
 
         expect(config.sitemap.sitemaps_host).to be_nil
+      end
+
+      it "infers protocol from Rails (respects force_ssl)" do
+        config.action_controller.asset_host = "example.test"
+
+        initializer.run(app)
+
+        expect(config.sitemap.sitemaps_host).to eq "http://example.test"
       end
     end
 
